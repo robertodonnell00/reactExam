@@ -2,20 +2,23 @@ import React from "react";
 import { useParams, Link } from "react-router";
 import MovieDetails from "../components/movieDetails/";
 import PageTemplate from "../components/templateMoviePage";
+import CastGrid from "../components/grids/CastGrid";
+import RecommendationsGrid from "../components/grids/RecommendationsGrid";
 import { getMovie, getMovieCredits, getMovieRecommendations } from "../api/tmdb-api";
 import { useQuery } from '@tanstack/react-query';
 import Spinner from '../components/spinner'
+import SectionHeader from "../components/sectionHeader";
+import Button from "@mui/material/Button";
 
 
 const MoviePage = (props) => {
   const { id } = useParams();
   const { data: movie, error, isPending, isError } = useQuery({
-    queryKey: ['movie', { id: id }],
-    queryFn: getMovie,
-  })
+      queryKey: ['movie', { id: id }],
+      queryFn: getMovie,
+    })
   const credits = useQuery({ queryKey: ["credits", id], queryFn: () => getMovieCredits(id) });
   const recs = useQuery({ queryKey: ["recs", id], queryFn: () => getMovieRecommendations(id) });
-
   
 
   if (isPending) {
@@ -33,60 +36,30 @@ const MoviePage = (props) => {
         <MovieDetails movie={movie} />
       </PageTemplate>
 
-      {/* CAST */}
-      <section style={{ padding: "1rem 2rem" }}>
-        <h2>Cast</h2>
+      <SectionHeader
+          title="Cast"
+          action={
+            <Button component={Link} to={`/movies/${id}/credits`} size="small">
+              View full cast:
+            </Button>
+          }
+        />
         {credits.isPending && <Spinner />}
         {credits.isError && <p>Error: {credits.error.message}</p>}
-        {credits.data && (
-          <ul
-            style={{
-              listStyle: "none",
-              padding: 0,
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))",
-              gap: 12,
-            }}
-          >
-            {credits.data.cast.slice(0, 12).map((p) => (
-              <li key={p.cast_id || p.credit_id}>
-                <strong>{p.name}</strong>
-                <div style={{ opacity: 0.8 }}>{p.character}</div>
-              </li>
-            ))}
-          </ul>
-        )}
-        <div style={{ marginTop: 8 }}>
-          <Link to={`/movies/${id}/credits`}>View full cast →</Link>
-        </div>
-      </section>
+        {credits.data?.cast && <CastGrid cast={credits.data.cast} />}
 
-      {/* RECOMMENDATIONS */}
-      <section style={{ padding: "1rem 2rem" }}>
-        <h2>Recommended Movies</h2>
+        {/* RECOMMENDATIONS */}
+        <SectionHeader
+          title="Recommended Movies"
+          action={
+            <Button component={Link} to={`/movies/${id}/recommendations`} size="small">
+              See all recommendations: 
+            </Button>
+          }
+        />
         {recs.isPending && <Spinner />}
         {recs.isError && <p>Error: {recs.error.message}</p>}
-        {recs.data && (
-          <ul
-            style={{
-              listStyle: "none",
-              padding: 0,
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
-              gap: 12,
-            }}
-          >
-            {recs.data.results.slice(0, 12).map((m) => (
-              <li key={m.id}>
-                <Link to={`/movies/${m.id}`}>{m.title}</Link>
-              </li>
-            ))}
-          </ul>
-        )}
-        <div style={{ marginTop: 8 }}>
-          <Link to={`/movies/${id}/recommendations`}>See all recommendations →</Link>
-        </div>
-      </section>
+        {recs.data?.results && <RecommendationsGrid movies={recs.data.results} />}
     </>
   );
 };

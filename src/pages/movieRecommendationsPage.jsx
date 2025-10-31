@@ -6,7 +6,10 @@ import { getMovie, getMovieRecommendations } from "../api/tmdb-api";
 
 const MovieRecommendationsPage = () => {
   const { id } = useParams();
-  const movie = useQuery({ queryKey: ["movie", id], queryFn: () => getMovie(id) });
+  const movie = useQuery({
+  queryKey: ["movie", { id }],
+  queryFn: (ctx) => getMovie(ctx),   
+    });
   const recs = useQuery({ queryKey: ["recs", id], queryFn: () => getMovieRecommendations(id) });
 
   if (movie.isPending) return <Spinner />;
