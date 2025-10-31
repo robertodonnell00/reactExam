@@ -24,11 +24,14 @@ const SiteHeader = () => {
   const navigate = useNavigate();
 
   const menuOptions = [
-    { label: "Home", path: "/" },
-    { label: "Favorites", path: "/movies/favorites" },
-    { label: "Now Playing", path: "/movies/now-playing" },
-    { label: "Option 4", path: "/" },
+  { label: "Home", path: "/" },
+  { label: "Favorites", path: "/movies/favorites" },
+  { label: "Top Rated", path: "/top-rated" },
+  { label: "Popular", path: "/popular" },
+  { label: "Trending Today", path: "/trending" },
+  { label: "Must-Watch", path: "/mustwatch" },  
   ];
+
 
   const handleMenuSelect = (pageURL) => {
     setAnchorEl(null);

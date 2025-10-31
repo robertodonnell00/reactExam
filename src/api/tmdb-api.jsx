@@ -105,3 +105,43 @@ export const getMovie = (args) => {
       throw error;
     });
 };
+
+export const getTopRatedMovies = async () => {
+  const res = await fetch(
+    `https://api.themoviedb.org/3/movie/top_rated?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`
+  );
+  if (!res.ok) throw new Error(`TMDB top_rated failed: ${res.status}`);
+  return res.json();
+};
+
+export const getPopularMovies = async () => {
+  const res = await fetch(
+    `https://api.themoviedb.org/3/movie/popular?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`
+  );
+  if (!res.ok) throw new Error(`TMDB popular failed: ${res.status}`);
+  return res.json();
+};
+
+export const getTrendingToday = async () => {
+  const res = await fetch(
+    `https://api.themoviedb.org/3/trending/movie/day?api_key=${import.meta.env.VITE_TMDB_KEY}`
+  );
+  if (!res.ok) throw new Error(`TMDB trending/day failed: ${res.status}`);
+  return res.json();
+};
+
+export const getMovieCredits = async (id) => {
+  const res = await fetch(
+    `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US`
+  );
+  if (!res.ok) throw new Error(`TMDB credits failed: ${res.status}`);
+  return res.json(); // {id, cast: [...], crew: [...]}
+};
+
+export const getMovieRecommendations = async (id) => {
+  const res = await fetch(
+    `https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`
+  );
+  if (!res.ok) throw new Error(`TMDB recommendations failed: ${res.status}`);
+  return res.json(); // {page, results: [...]}
+};
