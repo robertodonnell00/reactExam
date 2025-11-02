@@ -29,7 +29,6 @@ const SiteHeader = () => {
   { label: "Top Rated", path: "/top-rated" },
   { label: "Popular", path: "/popular" },
   { label: "Trending Today", path: "/trending" },
-  { label: "Must-Watch", path: "/mustwatch" },  
   { label: "Playlist", path: "/playlist" },  
   ];
 
