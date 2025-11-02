@@ -135,7 +135,7 @@ export const getMovieCredits = async (id) => {
     `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US`
   );
   if (!res.ok) throw new Error(`TMDB credits failed: ${res.status}`);
-  return res.json(); // {id, cast: [...], crew: [...]}
+  return res.json(); 
 };
 
 export const getMovieRecommendations = async (id) => {
@@ -143,5 +143,5 @@ export const getMovieRecommendations = async (id) => {
     `https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${import.meta.env.VITE_TMDB_KEY}&language=en-US&page=1`
   );
   if (!res.ok) throw new Error(`TMDB recommendations failed: ${res.status}`);
-  return res.json(); // {page, results: [...]}
+  return res.json(); 
 };

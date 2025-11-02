@@ -48,7 +48,7 @@ const MoviePage = (props) => {
         {credits.isError && <p>Error: {credits.error.message}</p>}
         {credits.data?.cast && <CastGrid cast={credits.data.cast} />}
 
-        {/* RECOMMENDATIONS */}
+
         <SectionHeader
           title="Recommended Movies"
           action={
